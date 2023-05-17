@@ -12,6 +12,11 @@ export class ConfigMigrator {
     /** @type {Record<string, string>} */
     store_config = {}
 
+
+    /**
+     * コンストラクタ
+     * @param {string} plugin_id プラグインID
+     */
     constructor(plugin_id) {
         this.plugin_id = plugin_id
     }
@@ -21,7 +26,10 @@ export class ConfigMigrator {
    * put_forms関数はプラグインIDを使用してエクスポートフォームを作成し、インポートフォームも作成します。
    * 要素を構築するUtils.buildElementを使用し、ヘッダーにラベルと要素を追加します。
    */
-    put_forms() {
+    put_forms(node_id) {
+        if(node_id == undefined){
+            node_id = this.HEADER_NODE_ID
+        }
         const form_export = this.compose_export_form(this.plugin_id)
         const form_import = this.compose_import_form()
 
@@ -40,12 +48,12 @@ export class ConfigMigrator {
         })
         const header = Utils.ce('div', '', [label])
 
-        const node_header = document.getElementById(this.HEADER_NODE_ID)
+        const node_header = document.getElementById(node_id)
         if (node_header == null) {
             return
         }
         node_header.appendChild(
-            Utils.ce('div', '', [
+            Utils.ce('div', 'mt-3 mb-3', [
                 header
                 , forms
             ])
@@ -53,7 +61,11 @@ export class ConfigMigrator {
 
     }
 
-    // インポートフォームの構築
+    /**
+     * インポートボタンを持つdiv要素を作成して返します。
+     * 
+     * @return {HTMLDivElement} インポートボタンを持つdiv要素
+     */
     compose_import_form  () {
         const button_import = this.make_button_import()
 
@@ -69,7 +81,11 @@ export class ConfigMigrator {
         })
     }
 
-    // インポートボタンの構築
+    /**
+     * インポートボタンを作成して返します。
+     * 
+     * @return {HTMLInputElement} インポートボタンDIV要素
+     */
     make_button_import() {
         const btn_import = new Button({
             'text': this.LABEL_IMPORT_BUTTON
@@ -171,7 +187,7 @@ export class ConfigMigrator {
     /**
    * plugin_idを受け取り、設定情報をJSON形式でダウンロードするボタンを生成します。
    * @param {String} plugin_id プラグインID
-   * @return {HTMLElement} 生成されたHTML要素
+   * @return {HTMLDivElement} 生成されたHTML要素
    */
     compose_export_form(plugin_id) {
         const CONF = kintone.plugin.app.getConfig(plugin_id);
@@ -188,7 +204,7 @@ export class ConfigMigrator {
    * 
    * @param {Uint8Array} data - データ
    * @param {string} filename - ファイル名 (デフォルト: settings.txt)
-   * @returns {HTMLElement} 構築したブロック要素
+   * @returns {HTMLDivElement} 構築したブロック要素
    */
     make_download_button(data, filename = 'settings.txt') {
         const bom = new Uint8Array([0xEF, 0xBB, 0xBF]); // add BOM

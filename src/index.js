@@ -1,1 +1,1 @@
-import "config-migrator";
+export * from "./config-migrator";
