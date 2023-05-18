@@ -1,23 +1,29 @@
 export class ConfigMigrator {
     /**
-     * コンストラクタ
+     * kintoneのプラグインIDを指定して初期化します。
+     * 設定保存時のキーも指定できますが将来の変更に備えてのものなので、通常はデフォルトの'config'を使用してください。
      * @param {string} plugin_id プラグインID
+     * @param {string} config_key kintone.plugin.app.getConfig(plugin_id) で取得する辞書のキー(通常はdefaultの'config'でよい)
      */
-    constructor(plugin_id: string);
+    constructor(plugin_id: string, config_key?: string);
     LABEL_ITEM: string;
     LABEL_IMPORT_BUTTON: string;
     LABEL_EXPORT_BUTTON: string;
     HEADER_NODE_ID: string;
     ID_SUBMIT_BUTTON: string;
+    DEFAULT_CONFIG_KEY: string;
     /** @type {Record<string, string>} */
     store_config: Record<string, string>;
     plugin_id: string;
+    config_key: string;
     /**
-   * インポート・エクスポートフォームを配置します。
-   * put_forms関数はプラグインIDを使用してエクスポートフォームを作成し、インポートフォームも作成します。
-   * 要素を構築するUtils.buildElementを使用し、ヘッダーにラベルと要素を追加します。
-   */
-    put_forms(node_id: any): void;
+     * インポート・エクスポートフォームを配置します。
+     * put_forms関数はプラグインIDを使用してエクスポートフォームを作成し、インポートフォームも作成します。
+     * 要素を構築するUtils.buildElementを使用し、ヘッダーにラベルと要素を追加します。
+     * @param {string} node_id フォームを配置したいHTML要素のIDを指定してください。
+     * @returns
+     */
+    put_forms(node_id: string): void;
     /**
      * インポートボタンを持つdiv要素を作成して返します。
      *
