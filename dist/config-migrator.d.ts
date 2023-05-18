@@ -3,19 +3,17 @@ export class ConfigMigrator {
      * kintoneのプラグインIDを指定して初期化します。
      * 設定保存時のキーも指定できますが将来の変更に備えてのものなので、通常はデフォルトの'config'を使用してください。
      * @param {string} plugin_id プラグインID
-     * @param {string} config_key kintone.plugin.app.getConfig(plugin_id) で取得する辞書のキー(通常はdefaultの'config'でよい)
      */
-    constructor(plugin_id: string, config_key?: string);
+    constructor(plugin_id: string);
     LABEL_ITEM: string;
     LABEL_IMPORT_BUTTON: string;
     LABEL_EXPORT_BUTTON: string;
     HEADER_NODE_ID: string;
     ID_SUBMIT_BUTTON: string;
-    DEFAULT_CONFIG_KEY: string;
+    DOWNLOAD_FILENAME: string;
     /** @type {Record<string, string>} */
     store_config: Record<string, string>;
     plugin_id: string;
-    config_key: string;
     /**
      * インポート・エクスポートフォームを配置します。
      * put_forms関数はプラグインIDを使用してエクスポートフォームを作成し、インポートフォームも作成します。

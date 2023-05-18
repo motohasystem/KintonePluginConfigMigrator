@@ -8,7 +8,6 @@ export class ConfigMigrator {
     LABEL_EXPORT_BUTTON = '⬇️設定をダウンロード（保存）'
     HEADER_NODE_ID = "KINTANLAB-SETTING-IMPORTER"
     ID_SUBMIT_BUTTON = 'button-load-settings'
-    DEFAULT_CONFIG_KEY = 'config'
     DOWNLOAD_FILENAME = 'settings.json'
 
     /** @type {Record<string, string>} */
@@ -19,11 +18,9 @@ export class ConfigMigrator {
      * kintoneのプラグインIDを指定して初期化します。
      * 設定保存時のキーも指定できますが将来の変更に備えてのものなので、通常はデフォルトの'config'を使用してください。
      * @param {string} plugin_id プラグインID
-     * @param {string} config_key kintone.plugin.app.getConfig(plugin_id) で取得する辞書のキー(通常はdefaultの'config'でよい)
      */
-    constructor(plugin_id, config_key = 'config') {
+    constructor(plugin_id) {
         this.plugin_id = plugin_id
-        this.config_key = config_key
     }
 
     /**
@@ -149,14 +146,7 @@ export class ConfigMigrator {
                     throw new Error('event.target.result が文字列型ではありませんでした。')
                 }
                 const jsonData = JSON.parse(event.target.result);
-                
-                // JSONデータを変数に読み込んだ後の処理をここで実行
-                this.store_config = ((json) => {
-                    const store = {}
-                    store[this.config_key] = JSON.stringify(json)
-                    return store
-                })(jsonData)
-
+                this.store_config = jsonData
                 // 最終確認ダイアログと読み込みの実行
                 const msg = '現在の設定を上書きして、読み込んだ設定を保存します。よろしいですか？'
                 if (confirm(msg)) {
@@ -202,9 +192,8 @@ export class ConfigMigrator {
    */
     compose_export_form(plugin_id) {
         const CONF = kintone.plugin.app.getConfig(plugin_id);
-        const config_body = CONF[this.config_key]
-
-        const btn_link = this.make_download_button(config_body, this.DOWNLOAD_FILENAME)
+        const serialized = JSON.stringify(CONF)
+        const btn_link = this.make_download_button(serialized, this.DOWNLOAD_FILENAME)
         const form = Utils.ce('div', 'export_button_block', [btn_link], '', {
             'style': 'float: left; margin-right: 1em;'
         })
