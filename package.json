@@ -1,6 +1,6 @@
 {
   "name": "kintoneplugin-config-migrator",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "\"KintonePluginConfigMigrator\" is a handy library that allows you to easily export and import plugin configurations to JSON format. With this library, you can save plugin configurations in JSON format for backup purposes or effortless migration to different environments. It provides the ability to export configurations to create backups and easily share configurations across different environments. Additionally, by using the import feature, you can instantly apply configurations to other environments. KintonePluginConfigMigrator enables seamless configuration management, making it a convenient and efficient tool for developers and users.",
   "main": "src/index.js",
   "types": "dist/index.d.ts",
