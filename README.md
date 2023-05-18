@@ -37,7 +37,6 @@ kitnone plugin APIのgetConfig()を使って取得した設定をそのままダ
 
 ```javascript
 const CONF = kintone.plugin.app.getConfig(plugin_id);
-const config_body = CONF['config']
 ```
 
 ## インポートの処理
@@ -45,9 +44,9 @@ const config_body = CONF['config']
 同じくkintone plugin APIのsetConfig()でアップロードしたjsonをそのまま格納しています。
 
 ```javascript
-store['config'] = JSON.stringify(json)
-kintone.plugin.app.setConfig(store, function () {
-    alert('プラグイン設定を保存しました。');
+const jsonData = JSON.parse(event.target.result);
+kintone.plugin.app.setConfig(jsonData, function () {
+    alert('🆙 プラグイン設定を保存しました。アプリの更新をお忘れなく！');
     window.location.href = '../../flow?app=' + kintone.app.getId();
 });
 ```
