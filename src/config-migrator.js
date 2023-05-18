@@ -9,6 +9,7 @@ export class ConfigMigrator {
     HEADER_NODE_ID = "KINTANLAB-SETTING-IMPORTER"
     ID_SUBMIT_BUTTON = 'button-load-settings'
     DEFAULT_CONFIG_KEY = 'config'
+    DOWNLOAD_FILENAME = 'settings.json'
 
     /** @type {Record<string, string>} */
     store_config = {}
@@ -148,7 +149,6 @@ export class ConfigMigrator {
                     throw new Error('event.target.result が文字列型ではありませんでした。')
                 }
                 const jsonData = JSON.parse(event.target.result);
-                console.log({jsonData});
                 
                 // JSONデータを変数に読み込んだ後の処理をここで実行
                 this.store_config = ((json) => {
@@ -156,8 +156,6 @@ export class ConfigMigrator {
                     store[this.config_key] = JSON.stringify(json)
                     return store
                 })(jsonData)
-
-                console.log(this.store_config)
 
                 // 最終確認ダイアログと読み込みの実行
                 const msg = '現在の設定を上書きして、読み込んだ設定を保存します。よろしいですか？'
@@ -206,10 +204,7 @@ export class ConfigMigrator {
         const CONF = kintone.plugin.app.getConfig(plugin_id);
         const config_body = CONF[this.config_key]
 
-        console.log(this.config_key)
-        console.log({config_body})
-
-        const btn_link = this.make_download_button(config_body, 'setting.json')
+        const btn_link = this.make_download_button(config_body, this.DOWNLOAD_FILENAME)
         const form = Utils.ce('div', 'export_button_block', [btn_link], '', {
             'style': 'float: left; margin-right: 1em;'
         })
@@ -243,8 +238,8 @@ export class ConfigMigrator {
         })
 
         // クリックイベント
-        button.addEventListener('click', (event) => {
-            console.log(event);
+        // eslint-disable-next-line no-unused-vars
+        button.addEventListener('click', (_event) => {
             anchor.click();
         })
 
